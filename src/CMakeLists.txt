@@ -3,7 +3,6 @@ add_library(tictactoe
     state.cpp
     board.hpp
     board.cpp
-    types.hpp
-    defines.hpp)
+    types.hpp)
 target_include_directories(tictactoe PUBLIC
 	"${CMAKE_CURRENT_SOURCE_DIR}")
