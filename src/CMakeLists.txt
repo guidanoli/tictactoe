@@ -1,8 +1,16 @@
-add_library(tictactoe
-    state.hpp
+set(This tictactoe)
+
+set(Sources
     state.cpp
-    board.hpp
     board.cpp
-    types.hpp)
-target_include_directories(tictactoe PUBLIC
-	"${CMAKE_CURRENT_SOURCE_DIR}")
+)
+
+set(Headers
+    state.hpp
+    board.hpp
+    types.hpp
+)
+
+add_library(${This} STATIC ${Sources} ${Headers})
+
+target_include_directories(${This} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")

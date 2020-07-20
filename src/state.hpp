@@ -31,6 +31,7 @@ namespace tictactoe
 		bool update(Tile t);
 	private:
 		void updatePhase();
+		void nextTurn();
 	};
 
 }

@@ -8,6 +8,10 @@ inline constexpr bool T ## Check(T t) \
 	       (static_cast<int>(t) < static_cast<int>(T::MAX)); \
 }
 
+#define FIRST_OPERATOR_ON(T) \
+template<> \
+constexpr T First<T> = static_cast<T>(static_cast<int>(T::MIN) + 1);
+
 #define ADD_OPERATOR_ON(T) \
 inline constexpr T operator+(T t1, T t2) { \
 	return static_cast<T>(static_cast<int>(t1) + static_cast<int>(t2)); \
@@ -15,12 +19,15 @@ inline constexpr T operator+(T t1, T t2) { \
 inline constexpr T& operator+=(T& t1, T& t2) { \
 	return t1 = t1 + t2; \
 } \
-inline constexpr T operator++(T t) { \
-	return static_cast<T>(static_cast<int>(t) + 1); \
+inline constexpr T& operator++(T& t) { \
+	return t = static_cast<T>(static_cast<int>(t) + 1); \
 }
 
 namespace tictactoe
 {
+
+	template<typename T>
+	constexpr T First = T();
 
 	//
 	//      |      |
@@ -62,11 +69,18 @@ namespace tictactoe
 		MAX,
 	};
 
+	FIRST_OPERATOR_ON(Tile)
+	FIRST_OPERATOR_ON(Symbol)
+	FIRST_OPERATOR_ON(Phase)
+
 	CHECK_OPERATOR_ON(Tile)
 	CHECK_OPERATOR_ON(Symbol)
 	CHECK_OPERATOR_ON(Phase)
 
 	ADD_OPERATOR_ON(Tile)
+	ADD_OPERATOR_ON(Symbol)
+	ADD_OPERATOR_ON(Phase)
+
 }
 
 #undef CHECK_OPERATOR_ON

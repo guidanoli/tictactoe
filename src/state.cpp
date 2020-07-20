@@ -25,6 +25,8 @@ Phase State::getPhase() const
 
 bool State::update(Tile t)
 {
+	if (m_phase != Phase::RUNNING)
+		return false;
 	auto symbol_at_t = m_board.getTileSymbol(t);
 	if (!symbol_at_t)
 		return false;
@@ -32,7 +34,16 @@ bool State::update(Tile t)
 		return false;
 	m_board.setTileSymbol(t, m_turn);
 	updatePhase();
+	nextTurn();
 	return true;
+}
+
+void State::nextTurn()
+{
+	if (m_turn == Symbol::CIRCLE)
+		m_turn = Symbol::CROSS;
+	else
+		m_turn = Symbol::CIRCLE;
 }
 
 void State::updatePhase()
