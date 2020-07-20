@@ -82,12 +82,13 @@ class GameSimulation
 	State st;
 public:
 	GameSimulation(bool crosses_first) : st(crosses_first) {}
-	State const& getState() { return st; }
-	void feedMoves(Tile const* begin, Tile const* end)
+	State const& getState() const { return st; }
+	State& getState() { return st; }
+	void feedMoves(Tile const* begin, Tile const* end, bool expected)
 	{
 		for (Tile const* t = begin; t != end; ++t)
 		{
-			EXPECT_TRUE(st.update(*t)) <<
+			EXPECT_EQ(expected, st.update(*t)) <<
 				"Tile = " << static_cast<int>(*t) << endl <<
 				"Phase = " << static_cast<int>(st.getPhase()) << endl <<
 				"Turn = " << static_cast<int>(st.getTurn());
@@ -109,7 +110,7 @@ TEST(StateTests, CatsGame)
 		Tile::C1,
 		Tile::B2
 	};
-	game.feedMoves(moves, moves + size(moves));
+	game.feedMoves(moves, moves + size(moves), true);
 	EXPECT_EQ(game.getState().getPhase(), Phase::CATS_GAME);
 }
 
@@ -123,7 +124,7 @@ TEST(StateTests, CrossWon)
 		Tile::A2,
 		Tile::C0
 	};
-	game.feedMoves(moves, moves + size(moves));
+	game.feedMoves(moves, moves + size(moves), true);
 	EXPECT_EQ(game.getState().getPhase(), Phase::CROSS_WON);
 }
 
@@ -137,6 +138,46 @@ TEST(StateTests, CirclesWon)
 		Tile::A2,
 		Tile::C0
 	};
-	game.feedMoves(moves, moves + size(moves));
+	game.feedMoves(moves, moves + size(moves), true);
 	EXPECT_EQ(game.getState().getPhase(), Phase::CIRCLE_WON);
+}
+
+TEST(StateTests, OverrideTile)
+{
+	auto game = GameSimulation(true);
+	static const Tile moves[] = {
+		Tile::A0, // CROSS
+		Tile::B1  // CIRCLE
+	};
+	game.feedMoves(moves, moves + size(moves), true);
+	EXPECT_EQ(game.getState().getPhase(), Phase::RUNNING);
+	game.feedMoves(moves, moves + size(moves), false);
+	EXPECT_EQ(game.getState().getPhase(), Phase::RUNNING);
+	EXPECT_TRUE(game.getState().update(Tile::B0));
+	EXPECT_EQ(game.getState().getPhase(), Phase::RUNNING);
+}
+
+TEST(StateTests, AfterEnd)
+{
+	auto game = GameSimulation(false);
+	static const Tile moves[] = {
+		Tile::A0,
+		Tile::B1,
+		Tile::B0,
+		Tile::A2,
+		Tile::C0
+	};
+	game.feedMoves(moves, moves + size(moves), true);
+	EXPECT_FALSE(game.getState().update(Tile::C1)); // C1 is empty
+}
+
+TEST(StateTests, InvalidUpdateTile)
+{
+	auto game = GameSimulation(true);
+	static const Tile moves[] = {
+		Tile::MIN,
+		Tile::MAX
+	};
+	game.feedMoves(moves, moves + size(moves), false);
+	EXPECT_EQ(game.getState().getPhase(), Phase::RUNNING);
 }
