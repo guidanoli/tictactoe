@@ -8,6 +8,8 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 add_subdirectory(src)
 
+add_subdirectory(app)
+
 enable_testing()
 add_subdirectory(googletest)
 

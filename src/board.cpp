@@ -7,7 +7,7 @@ using namespace std;
 
 Board::Board()
 {
-	fill(m_matrix, m_matrix + 9, Symbol::EMPTY);
+	fill(m_matrix, m_matrix + size(m_matrix), Symbol::EMPTY);
 }
 
 optional<Symbol> Board::getTileSymbol(Tile t) const
