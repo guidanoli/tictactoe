@@ -1,10 +1,11 @@
 #include "state.hpp"
 
+#include <cassert>
+
 using namespace tictactoe;
 
 State::State(bool cross_begins) :
 	m_turn(cross_begins ? Symbol::CROSS : Symbol::CIRCLE),
-	m_board(),
 	m_phase(Phase::RUNNING)
 {}
 
@@ -32,7 +33,8 @@ bool State::update(Tile t)
 		return false;
 	if (*symbol_at_t != Symbol::EMPTY)
 		return false;
-	m_board.setTileSymbol(t, m_turn);
+	if (!m_board.setTileSymbol(t, m_turn))
+		assert(0);
 	updatePhase();
 	nextTurn();
 	return true;
@@ -70,7 +72,7 @@ void State::updatePhase()
 		}
 	}
 	bool has_empty_tile = false;
-	for (Tile t = Tile::A0; t < Tile::MAX; ++t) {
+	for (Tile t = First<Tile>; t < Tile::MAX; ++t) {
 		if (*m_board.getTileSymbol(t) == Symbol::EMPTY) {
 			has_empty_tile = true;
 			break;

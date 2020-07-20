@@ -85,5 +85,6 @@ namespace tictactoe
 
 #undef CHECK_OPERATOR_ON
 #undef ADD_OPERATOR_ON
+#undef FIRST_OPERATOR_ON
 
 #endif

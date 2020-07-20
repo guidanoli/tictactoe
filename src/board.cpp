@@ -7,7 +7,7 @@ using namespace std;
 
 Board::Board()
 {
-	std::fill(m_matrix, m_matrix + 9, Symbol::EMPTY);
+	fill(m_matrix, m_matrix + 9, Symbol::EMPTY);
 }
 
 optional<Symbol> Board::getTileSymbol(Tile t) const
@@ -31,5 +31,5 @@ optional<size_t> Board::getIndex(Tile t)
 {
 	if (!TileCheck(t))
 		return nullopt;
-	return static_cast<size_t>(t) - static_cast<size_t>(Tile::A0);
+	return static_cast<size_t>(t) - static_cast<size_t>(First<Tile>);
 }
