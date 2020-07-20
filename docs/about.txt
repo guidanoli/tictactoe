@@ -1,0 +1,69 @@
+About Tic-Tac-Toe
+-----------------
+
+The game involves two players and a 3x3 board.
+
+     |      |
+     |      |
+_____|______|______
+     |      |
+     |      |
+_____|______|______
+     |      |
+     |      |
+     |      |
+ 
+Each tile can be filled with:
+* Nothing (empty)
+* A cross
+* A circle
+
+One player can only place crosses and the other can only place circles.
+A cross and a circle can only be placed in empty tiles.
+
+The game starts with one of the players. The criteria to decide who
+begins is arbitrary and can be decided by random chance.
+
+The first player then places its symbol in any of the 9 tiles.
+The turns then alternate until one of the players achieves a pattern.
+
+A pattern can be:
+
+I) A line
+
+     |      |
+     |      |
+_____|______|______
+     |      |
+     |      |
+_____|______|______
+     |      |
+  O  |   O  |   O
+     |      |
+
+II) A column
+
+     |      |
+  O  |      |
+_____|______|______
+     |      |
+  O  |      |
+_____|______|______
+     |      |
+  O  |      |
+     |      |
+
+III) A diagonal
+
+     |      |
+  O  |      |
+_____|______|______
+     |      |
+     |  O   |
+_____|______|______
+     |      |
+     |      |  O
+     |      |
+
+When a pattern is made in the board, the game ends and the player
+who achieved the pattern is the one who wins that match.
